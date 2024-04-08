@@ -1,0 +1,44 @@
+Step 1: Building the Docker Image
+
+1. Clone the React Application Repository: Clone the repository containing your React application code from GitHub.
+
+2. Navigate to the Application Directory: Use the terminal to navigate into the directory of your React application.
+
+3. Build the Docker Image: Run the following command in your terminal to build the Docker image:
+   
+   docker build -t your-image-name .
+   
+   Replace `your-image-name` with a suitable name for your Docker image.
+
+Step 2: Deploying to Kubernetes with microk8s
+
+1. Install microk8s: Followed the instructions provided in the microk8s documentation to install microk8s on your system.
+
+2. Enable Required Add-ons: Enable the necessary microk8s add-ons, such as DNS and ingress:
+   
+   microk8s enable dns ingress
+
+3. Replace the app name and iamge name in the deployment and service file in the K8 Manifests folder   
+
+4. Apply Kubernetes Manifests: Apply the Kubernetes deployment and service YAML files to deploy your application:
+   
+   microk8s kubectl apply -f Deployment.yaml
+   microk8s kubectl apply -f Service.yaml
+   
+   Replace `deployment.yaml` and `service.yaml` with the names of your Kubernetes manifest files.
+
+Accessing the Application from Anywhere on the Internet
+
+1. Expose Kubernetes Service: Expose the Kubernetes service using an external IP address. If you are using microk8s, you can use the following command:
+   
+   microk8s kubectl expose service your-app-name-service --type=LoadBalancer --name=your-app-external-service
+   
+   Replace `your-app-name-service` with the name of your Kubernetes service.
+
+2. Get External IP Address: Retrieve the external IP address assigned to your service by running:
+   
+   microk8s kubectl get svc your-app-external-service
+   
+   Note down the external IP address.
+
+3. Access the Application: Access your application by navigating to `http://<external-ip>:80` in a web browser. Your React application should now be accessible from anywhere on the internet.
